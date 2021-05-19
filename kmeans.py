@@ -30,7 +30,7 @@ class KMeans:
         # mean feature vector for each cluster
         self.centroids = []
 
-    def compute_clusters(self, x):
+    def compute_algorithm(self, x):
         self.x= x
         self.n_samples, self.n_features =x.shape
 
@@ -44,9 +44,25 @@ class KMeans:
             self.clusters = self.create_clusters(self.centroids)
 
             # update centroids
+            centroids_old = self.centroids()
+            self.centroids = self.compute_centroids(self.clusters)
 
             # check if converged
+            if self.is_converged(centroids_old, self.centroids):
+                break
         # return cluster labels
+        return self.get_cluster_labels(self.clusters)
+
+    def get_cluster_labels(self, clusters):
+        # stores the index of the cluster it was assigned to
+        labels = np.empty(self.n_samples)
+
+        for cluster_index, cluster in enumerate(clusters):
+            for sample_index in cluster:
+                labels
+
+
+
 
     def create_clusters(self, centroids):
         # initialise empty list of list for clusters
@@ -61,10 +77,7 @@ class KMeans:
             old_centroids = self.centroids
 
             # create new centroids with updated means
-            self.centroids = self.compute_centroids(self.)
-
-
-
+            self.centroids = self.compute_centroids(self.clusters)
 
             # put the current sample index in the closest cluster
             clusters[centroid_index].append(index)
@@ -79,6 +92,34 @@ class KMeans:
         closest_index = np.argmin(distances)
 
         return closest_index
+
+    def compute_centroids(self, clusters):
+        # initialise the centroids with zeros
+        centroids = np.zeros(self.k, self.n_features)
+
+        # calculate the new mean for each cluster
+        for cluster_index, cluster in enumerate(clusters):
+            cluster_mean = np.mean(self.x[cluster], axis=0)
+            centroids[cluster_index] = cluster_mean
+
+        return centroids
+
+    def is_converged(self, centroids_old, centroids):
+        # calculate euclidean distances for each of the old vs new centroids
+        distances = [euclidean_distance(centroids_old[i], centroids[i]) for i in range(self.k)]
+
+        if sum(distances == 0):
+            converged = true
+        else:
+            converged = false
+
+        return converged
+
+
+
+
+
+
 
 
 

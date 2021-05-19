@@ -30,22 +30,55 @@ class KMeans:
         # mean feature vector for each cluster
         self.centroids = []
 
-    def cluster_samples(self, X):
-        self.X = X
-        self.n_samples, self.n_features =X.shape
+    def compute_clusters(self, x):
+        self.x= x
+        self.n_samples, self.n_features =x.shape
 
         # initialise centroids
-        selected_samples=[1,4,7]
+        self.centroids = [1, 4, 7]
 
-            #optimization
-            for _ in range(self.max_iterations):
+        # optimization
+        for _ in range(self.max_iterations):
 
-                # update clusters
+            # update clusters
+            self.clusters = self.create_clusters(self.centroids)
 
-                # update centroids
+            # update centroids
 
-                # check if converged
-        #return cluster labels
+            # check if converged
+        # return cluster labels
+
+    def create_clusters(self, centroids):
+        # initialise empty list of list for clusters
+        clusters = [[] for _ in range(self, k)]
+
+        # iterate over the data
+        for index, sample in enumerate(self, x):
+            # get the index of closest centroid
+            centroid_index = self.closest_centroid(sample, centroids)
+
+            # store old centroids to check for convergence later
+            old_centroids = self.centroids
+
+            # create new centroids with updated means
+            self.centroids = self.compute_centroids(self.)
+
+
+
+
+            # put the current sample index in the closest cluster
+            clusters[centroid_index].append(index)
+
+        return clusters
+
+    def closest_centroid(self, sample, centroids):
+        # calculate distance from the current sample to each centroid
+        distances = [euclidean_distance(sample, point) for point in centroids]
+
+        # get min distance
+        closest_index = np.argmin(distances)
+
+        return closest_index
 
 
 
@@ -63,7 +96,21 @@ class KMeans:
 
 
 
-# define main method
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # define main method
 if __name__ == '__main__':
 
     print_hi('K-means')

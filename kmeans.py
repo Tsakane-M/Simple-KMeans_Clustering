@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+np.random.seed(42)
+
 
 def euclidean_distance(x1, x2):
     distance = np.sqrt(np.sum((x2-x1)**2))
@@ -8,10 +10,12 @@ def euclidean_distance(x1, x2):
 
 
 class KMeans:
-    def __init__(self, k=3, max_iterations=100, plot_steps=False):
+    def __init__(self, k=5, max_iterations=100, plot_steps=False, sample_size=10, data=[[3] * 2] * 2):
         self.k = k
         self.max_iterations = max_iterations
         self.plot_steps = plot_steps
+        self.sample_size = sample_size
+        self.data=data
 
         # list of lists(sample indices for each cluster)
         self.clusters = [[] for _ in range(self.k)]
@@ -20,11 +24,11 @@ class KMeans:
         self.centroids = []
 
     def compute_algorithm(self, x):
-        self.x= x
-        self.n_samples, self.n_features =x.shape
+        self.x = x
+        self.sample_size = sample_size
 
         # initialise centroids
-        random_sample_indexes=np.random.choice(self.n_samples, self.k, replace=False)
+        random_sample_indexes = np.random.choice(self.n_samples, self.k, replace=False)
         self.centroids = [self.x[index] for index in random_sample_indexes]
 
         # optimization
@@ -40,12 +44,13 @@ class KMeans:
             centroids_old = self.centroids()
             self.centroids = self.compute_centroids(self.clusters)
 
-            if self.plot_steps:
-                self.plot
-
             # check if converged
             if self.is_converged(centroids_old, self.centroids):
                 break
+
+            if self.plot_steps:
+                self.plot
+
         # return cluster labels
         return self.get_cluster_labels(self.clusters)
 
@@ -110,7 +115,7 @@ class KMeans:
 
         return converged
 
-    def plot(self,x):
+    def plot(self, x):
         fig, ax = plt.subplots(figsize=(12, 8))
 
         for i, index in enumerate(self.clusters):

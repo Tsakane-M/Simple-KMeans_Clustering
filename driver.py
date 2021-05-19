@@ -13,7 +13,32 @@ def read_data():
     lines = []
     with open('input.txt') as f:
         lines = f.readlines()
+    # Closing file
+    f.close()
     return lines
+
+
+def process_input(my_lines):
+    my_lines = my_lines[1:]
+    count = 0
+
+    # x, y = make_blobs(centers=3, n_samples=500, n_features=3, shuffle=True, random_state=40)
+
+    # get sample size
+    samples = len(my_lines)
+
+    # create a 2D array to store our data
+    rows, cols = (samples, 3)
+    this_data = [[3] * cols] * rows
+
+    # print(this_data)
+
+    # extract data values x,y from the lines
+    for index in range(samples):
+        this_data[index] = my_lines[index].split()
+
+    print(this_data)
+    return this_data
 
 
 # define main method
@@ -21,17 +46,10 @@ if __name__ == '__main__':
 
     print_hi('K-means')
     the_lines = read_data()
+    data = process_input(the_lines)
 
-    count = 0
-    for line in the_lines:
-        count += 1
-        print(f'line {count}: {line}')
+    # print(len(data))
+    k = KMeans(k=3, max_iterations=150, plot_steps=False, sample_size=len(data))
+    # y_predict = k.compute_algorithm(x)
 
-    x, y = make_blobs(centers=4, n_samples=500, n_features=2,shuffle=True,random_state=42)
-    print(x.shape)
-
-    clusters = len(np.unique(y))
-    print(clusters)
-
-    k = KMeans(k=clusters, max_iterations=150, plot_steps=False)
-    y_predict = k.compute_algorithm(x)
+    # k.plot()

@@ -1,16 +1,5 @@
 import numpy as np
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'{name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-def read_data():
-    lines = []
-    with open('input.txt') as f:
-        lines = f.readlines()
-    return lines
+import matplotlib.pyplot as plt
 
 
 def euclidean_distance(x1, x2):
@@ -19,7 +8,7 @@ def euclidean_distance(x1, x2):
 
 
 class KMeans:
-    def __init__(self, k=3, max_iterations=100, plot_steps=false):
+    def __init__(self, k=3, max_iterations=100, plot_steps=False):
         self.k = k
         self.max_iterations = max_iterations
         self.plot_steps = plot_steps
@@ -35,7 +24,8 @@ class KMeans:
         self.n_samples, self.n_features =x.shape
 
         # initialise centroids
-        self.centroids = [1, 4, 7]
+        random_sample_indexes=np.random.choice(self.n_samples, self.k, replace=False)
+        self.centroids = [self.x[index] for index in random_sample_indexes]
 
         # optimization
         for _ in range(self.max_iterations):
@@ -43,9 +33,15 @@ class KMeans:
             # update clusters
             self.clusters = self.create_clusters(self.centroids)
 
+            if self.plot_steps:
+                self.plot
+
             # update centroids
             centroids_old = self.centroids()
             self.centroids = self.compute_centroids(self.clusters)
+
+            if self.plot_steps:
+                self.plot
 
             # check if converged
             if self.is_converged(centroids_old, self.centroids):
@@ -59,17 +55,16 @@ class KMeans:
 
         for cluster_index, cluster in enumerate(clusters):
             for sample_index in cluster:
-                labels
+                labels[sample_index] = cluster_index
 
-
-
+            return labels
 
     def create_clusters(self, centroids):
         # initialise empty list of list for clusters
-        clusters = [[] for _ in range(self, k)]
+        clusters = [[] for _ in range(self.k)]
 
         # iterate over the data
-        for index, sample in enumerate(self, x):
+        for i, sample in enumerate(self.x):
             # get the index of closest centroid
             centroid_index = self.closest_centroid(sample, centroids)
 
@@ -80,7 +75,7 @@ class KMeans:
             self.centroids = self.compute_centroids(self.clusters)
 
             # put the current sample index in the closest cluster
-            clusters[centroid_index].append(index)
+            clusters[centroid_index].append(i)
 
         return clusters
 
@@ -109,12 +104,20 @@ class KMeans:
         distances = [euclidean_distance(centroids_old[i], centroids[i]) for i in range(self.k)]
 
         if sum(distances == 0):
-            converged = true
+            converged = True
         else:
-            converged = false
+            converged = False
 
         return converged
 
+    def plot(self,x):
+        fig, ax = plt.subplots(figsize=(12, 8))
+
+        for i, index in enumerate(self.clusters):
+            point = self.x[index].T
+            ax.scatter(*point, marker="x", color="black", linewidth=2)
+
+        plt.show()
 
 
 
@@ -151,16 +154,9 @@ class KMeans:
 
 
 
-    # define main method
-if __name__ == '__main__':
 
-    print_hi('K-means')
-    the_lines = read_data()
 
-    count = 0
-    for line in the_lines:
-        count += 1
-        print(f'line {count}: {line}')
+
 
 
 

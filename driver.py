@@ -22,14 +22,13 @@ def process_input(my_lines):
     my_lines = my_lines[1:]
     count = 0
 
-    # x, y = make_blobs(centers=3, n_samples=500, n_features=3, shuffle=True, random_state=40)
-
     # get sample size
     samples = len(my_lines)
 
     # create a 2D array to store our data
     rows, cols = (samples, 3)
     this_data = [[3] * cols] * rows
+    int_data = [[3] * cols] * rows
 
     # print(this_data)
 
@@ -49,7 +48,8 @@ if __name__ == '__main__':
     data = process_input(the_lines)
 
     # print(len(data))
-    k = KMeans(k=3, max_iterations=150, plot_steps=False, sample_size=len(data))
-    # y_predict = k.compute_algorithm(x)
+    k = KMeans(3, 150, len(data))
 
-    # k.plot()
+    k.compute_algorithm(data)
+
+

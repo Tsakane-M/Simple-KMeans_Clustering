@@ -2,14 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def euclidean_distance(points1, points2, a, b):
-
+def euclidean_distance(c_data, c_centroids, a, b):
+    print(c_data[a][b])
     # calculate distance from the current sample to each centroid
-    xSquare = (int(points1[a][1]) - int(points2[b][1])) ** 2
-    ySquare = (int(points1[a][2]) - int(points2[b][2])) ** 2
-    distance = np.sqrt(xSquare + ySquare)
+    #xSquare = (int(c_data[a][1]) - int(c_centroids[b][1])) ** 2
+    #ySquare = (int(c_data[a][2]) - int(c_centroids[b][2])) ** 2
+    #distance = np.sqrt(xSquare + ySquare)
     #print(distance)
-    return distance
+    #return distance
 
 
 class KMeans:
@@ -23,14 +23,14 @@ class KMeans:
         # list of lists(sample indices for each cluster)
         self.clusters = [[] for _ in range(self.k)]
 
-        # mean feature vector for each cluster
-        self.centroids = []
+        # mean feature vector for each cluster (x1,y1) , (x2,y2), (x3,y3)
+        self.centroids = [[0, 0], [0, 0], [0, 0]]
 
     def compute_algorithm(self, class_dat):
         # initialise centroids indices as 1 ,4, 7
         self.class_data = class_dat
-        self.centroids = [self.class_data[0], self.class_data[3], self.class_data[6]]
-
+        self.centroids = [[self.class_data[0][1], self.class_data[0][2]], [self.class_data[3][1], self.class_data[3][2]],  [self.class_data[6][1], self.class_data[6][2]]]
+        print(self.centroids)
         # optimization
         # CREATE CLUSTERS
 
@@ -41,17 +41,33 @@ class KMeans:
         # 1.1 iterate over the data
         for i in range(8):
             distances = [3]*3
-            for j in range(3):
-                # calculate euclidean distances for each sample in the data
-                distances[j] = euclidean_distance(self.class_data, self.centroids, i, j)
+            # calculate euclidean distances for each sample in the data
+            # print(self.class_data[i][1])
+            # get x and y value from input
+            x_data = self.class_data[i][1]
+            y_data = self.class_data[i][2]
 
-                # find closest index
-                closest_index = np.argmin(distances)
+            for j in range(3):
+                # get x and y from centroids
+                x_cent = self.centroids[j][0]
+                y_cent = self.centroids[j][1]
+
+                # calculate euclidean distance
+                xSquare = (int(x_cent) - int(x_data)) ** 2
+                ySquare = (int(y_cent) - int(y_data)) ** 2
+                distance = np.sqrt(xSquare + ySquare)
+                distances[j] = distance
+
+            #print(distances)
+
+            # find closest index
+            closest_index = np.argmin(distances)
 
             # assign closest index to array that stores clusters
             clusters[closest_index].append(i)
         self.clusters = clusters
 
+        print(clusters)
 
         # Calculate new centroids from the clusters
 
@@ -59,11 +75,11 @@ class KMeans:
         centroids_old = self.centroids
 
         self.centroids = self.compute_centroids(self.clusters)
+        print(self.centroids)
 
     def compute_centroids(self, clusters):
         # initialise the centroids with zeros
-        centroids = [0, 0, 0]
-        print(clusters)
+        centroids = [[0, 0], [0, 0], [0, 0]]
 
         for i in range(3):
             x_cluster_sum = 0
@@ -75,17 +91,23 @@ class KMeans:
                 print(f'x is {xvalue} : y is {yvalue}')
                 x_cluster_sum = x_cluster_sum + xvalue
                 y_cluster_sum = y_cluster_sum + yvalue
+            # calculate means
             x_cluster_mean = x_cluster_sum/len(clusters[i])
             y_cluster_mean = y_cluster_sum / len(clusters[i])
 
             print(f'Cluster {i} xmean= {x_cluster_mean}')
             print(f'Cluster {i} ymean= {y_cluster_mean}')
             print(f'\n')
-        return [0, 3, 6]
+
+            # assign new means to centroid
+            centroids[i][0] = x_cluster_mean
+            centroids[i][1] = y_cluster_mean
+
+        return centroids
         # calculate the new mean for each cluster
         # for cluster_index, cluster in enumerate(clusters):
-            # cluster_mean = np.mean(self.x[cluster], axis=0)
-            # centroids[cluster_index] = cluster_mean\
+        # cluster_mean = np.mean(self.x[cluster], axis=0)
+        # centroids[cluster_index] = cluster_mean\
 
 
 

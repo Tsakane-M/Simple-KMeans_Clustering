@@ -149,7 +149,7 @@ class KMeans:
         # print(labels)
 
         for i in range(3):
-        
+
             for j in range(len(clusters[i])):
                 labels[i][j] = int((self.class_data[clusters[i][j]])[0])
 

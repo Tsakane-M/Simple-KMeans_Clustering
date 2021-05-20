@@ -2,14 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def euclidean_distance(c_data, c_centroids, a, b):
-    print(c_data[a][b])
-    # calculate distance from the current sample to each centroid
-    #xSquare = (int(c_data[a][1]) - int(c_centroids[b][1])) ** 2
-    #ySquare = (int(c_data[a][2]) - int(c_centroids[b][2])) ** 2
-    #distance = np.sqrt(xSquare + ySquare)
-    #print(distance)
-    #return distance
+def euclidean_distance(old_centroid, new_centroid):
+
+    return np.sqrt(np.sum((x1 - x2)**2))
 
 
 class KMeans:
@@ -67,7 +62,7 @@ class KMeans:
             clusters[closest_index].append(i)
         self.clusters = clusters
 
-        print(clusters)
+        # print(clusters)
 
         # Calculate new centroids from the clusters
 
@@ -75,7 +70,12 @@ class KMeans:
         centroids_old = self.centroids
 
         self.centroids = self.compute_centroids(self.clusters)
-        print(self.centroids)
+        # print(self.centroids)
+
+        # check if clusters have changed
+        if self._is_converged(centroids_old, self.centroids):
+           #break
+           print(Converged)
 
     def compute_centroids(self, clusters):
         # initialise the centroids with zeros
@@ -84,30 +84,53 @@ class KMeans:
         for i in range(3):
             x_cluster_sum = 0
             y_cluster_sum = 0
-            print(f'Cluster {i}')
+            # print(f'Cluster {i}')
             for j in range(len(clusters[i])):
                 xvalue = int((self.class_data[clusters[i][j]])[1])
                 yvalue = int((self.class_data[clusters[i][j]])[2])
-                print(f'x is {xvalue} : y is {yvalue}')
+                # print(f'x is {xvalue} : y is {yvalue}')
                 x_cluster_sum = x_cluster_sum + xvalue
                 y_cluster_sum = y_cluster_sum + yvalue
             # calculate means
             x_cluster_mean = x_cluster_sum/len(clusters[i])
             y_cluster_mean = y_cluster_sum / len(clusters[i])
 
-            print(f'Cluster {i} xmean= {x_cluster_mean}')
-            print(f'Cluster {i} ymean= {y_cluster_mean}')
-            print(f'\n')
+            # print(f'Cluster {i} xmean= {x_cluster_mean}')
+            # print(f'Cluster {i} ymean= {y_cluster_mean}')
+            # print(f'\n')
 
             # assign new means to centroid
             centroids[i][0] = x_cluster_mean
             centroids[i][1] = y_cluster_mean
 
         return centroids
-        # calculate the new mean for each cluster
-        # for cluster_index, cluster in enumerate(clusters):
-        # cluster_mean = np.mean(self.x[cluster], axis=0)
-        # centroids[cluster_index] = cluster_mean\
+
+    def _is_converged(self, centroids_old, centroids):
+        # distances between each old and new centroids, for all centroids
+        distances = [0]*3
+        for i in range(3):
+            x_cent_old = int(centroids_old[i][0])
+            y_cent_old = int(centroids_old[i][1])
+
+            x_cent = int(centroids[i][0])
+            y_cent = int(centroids[i][1])
+
+            distance_x = x_cent_old - x_cent
+            distance_y = y_cent_old - y_cent
+
+            distance = np.sqrt(distance_x**2 + distance_y**2)
+            distances[i] = distance
+            # print(distances)
+        summation = 0
+
+        for i in range(3):
+            summation = summation+distances[i]
+            # print(summation)
+
+        return summation == 0
+
+
+
 
 
 

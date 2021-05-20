@@ -1,10 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
-
-def euclidean_distance(old_centroid, new_centroid):
-
-    return np.sqrt(np.sum((x1 - x2)**2))
 
 
 class KMeans:
@@ -26,8 +20,8 @@ class KMeans:
     def compute_algorithm(self, class_dat):
         # initialise centroids indices as 1 ,4, 7
         self.class_data = class_dat
-        self.centroids = [[int(self.class_data[0][1]), int(self.class_data[0][2])], [int(self.class_data[3][1]), int(self.class_data[3][2])], [int(self.class_data[6][1]), int(self.class_data[6][2])]]
-        iteration = 1
+        self.centroids = [[int(self.class_data[0][1]), int(self.class_data[0][2])], [int(self.class_data[3][1]), int( self.class_data[3][2])], [int(self.class_data[6][1]), int(self.class_data[6][2])]]
+
         # optimization
         # CREATE CLUSTERS
 
@@ -90,12 +84,10 @@ class KMeans:
             print(f'\n', file=f)
 
             # check if clusters have changed
-            if self._is_converged(centroids_old, self.centroids):
-                print(f'Converged!',file=f)
+            if self.is_converged(centroids_old, self.centroids):
+                print(f'Converged!', file=f)
                 break
-
                 # close file
-                f.close()
 
         # Classify samples as the index of their clusters
         return the_labels
@@ -128,7 +120,7 @@ class KMeans:
 
         return centroids
 
-    def _is_converged(self, centroids_old, centroids):
+    def is_converged(self, centroids_old, centroids):
         # distances between each old and new centroids, for all centroids
         distances = [0]*3
         for i in range(3):
@@ -154,10 +146,10 @@ class KMeans:
     def get_cluster_labels(self, clusters):
         # each sample will get the label of the cluster it was assigned to
         labels = clusters
-        #print(labels)
+        # print(labels)
 
         for i in range(3):
-            the_labels = [3] * 3
+        
             for j in range(len(clusters[i])):
                 labels[i][j] = int((self.class_data[clusters[i][j]])[0])
 

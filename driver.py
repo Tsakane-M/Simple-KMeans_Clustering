@@ -36,18 +36,18 @@ def process_input(my_lines):
     for index in range(samples):
         this_data[index] = my_lines[index].split()
 
-    # print(f'length of data is {len(this_data)}')
     return this_data
 
 
 # define main method
 if __name__ == '__main__':
 
-    print_hi('K-means')
+    print_hi(f'K-means Computation\n')
     the_lines = read_data()
     data = process_input(the_lines)
 
-    # print(len(data))
+    # create KMeans object
     k = KMeans(3, 150, len(data))
 
+    # compute KMeans Clusters
     k.compute_algorithm(data)

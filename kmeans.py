@@ -8,7 +8,9 @@ def euclidean_distance(old_centroid, new_centroid):
 
 
 class KMeans:
-    def __init__(self, k=5, max_iterations=100, plot_steps=False, sample_size=10, class_data=[[3] * 3] * 2):
+    def __init__(self, k=5, max_iterations=100, plot_steps=False, sample_size=10, class_data=None):
+        if class_data is None:
+            class_data = [[3] * 3] * 2
         self.k = k
         self.max_iterations = max_iterations
         self.plot_steps = plot_steps
@@ -24,13 +26,15 @@ class KMeans:
     def compute_algorithm(self, class_dat):
         # initialise centroids indices as 1 ,4, 7
         self.class_data = class_dat
-        self.centroids = [[self.class_data[0][1], self.class_data[0][2]], [self.class_data[3][1], self.class_data[3][2]],  [self.class_data[6][1], self.class_data[6][2]]]
-        print(self.centroids)
+        self.centroids = [[int(self.class_data[0][1]), int(self.class_data[0][2])], [int(self.class_data[3][1]), int(self.class_data[3][2])], [int(self.class_data[6][1]), int(self.class_data[6][2])]]
+        iteration = 1
         # optimization
         # CREATE CLUSTERS
 
         # Optimize clusters
-        for _ in range(self.max_iterations):
+        for it in range(self.max_iterations):
+            print(f'Iteration {it+1}')
+            print(f'...........')
             # initialise empty list of list for clusters
             clusters = [[] for _ in range(self.k)]
 
@@ -54,9 +58,7 @@ class KMeans:
                     ySquare = (int(y_cent) - int(y_data)) ** 2
                     distance = np.sqrt(xSquare + ySquare)
                     distances[j] = distance
-
-                #print(distances)
-
+                # print(distances)
                 # find closest index
                 closest_index = np.argmin(distances)
 
@@ -64,21 +66,29 @@ class KMeans:
                 clusters[closest_index].append(i)
             self.clusters = clusters
 
-            print(f'Cluster is: {clusters}\n')
-
             # Calculate new centroids from the clusters
 
             # save old centroids
             centroids_old = self.centroids
 
+            # compute new centroids
             self.centroids = self.compute_centroids(self.clusters)
-            print(f'Centroids are {self.centroids}')
 
+            # compute labels for the cluster contents
+            the_labels = self.get_cluster_labels(self.clusters)
+
+            # print centroids
+            for c in range(3):
+                print(f'Cluster  {c + 1}: {the_labels[c]}')
+                print(f'Centroid {c+1}: {centroids_old[c]}\n')
+            print(f'\n')
             # check if clusters have changed
             if self._is_converged(centroids_old, self.centroids):
-                print(f'Converged')
+                print(f'Converged!')
                 break
 
+        # Classify samples as the index of their clusters
+        return the_labels
 
     def compute_centroids(self, clusters):
         # initialise the centroids with zeros
@@ -129,57 +139,18 @@ class KMeans:
         for i in range(3):
             summation = summation+distances[i]
             # print(summation)
-
         return summation == 0
 
+    def get_cluster_labels(self, clusters):
+        # each sample will get the label of the cluster it was assigned to
+        labels = clusters
+        #print(labels)
 
+        for i in range(3):
+            the_labels = [3] * 3
+            for j in range(len(clusters[i])):
+                labels[i][j] = int((self.class_data[clusters[i][j]])[0])
 
+        # print(labels)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return labels

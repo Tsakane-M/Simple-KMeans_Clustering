@@ -31,10 +31,16 @@ class KMeans:
         # optimization
         # CREATE CLUSTERS
 
+        # open file for output
+        f = open("output.txt", "a")
+
+        # clear file
+        f.truncate(0)
+
         # Optimize clusters
         for it in range(self.max_iterations):
-            print(f'Iteration {it+1}')
-            print(f'...........')
+            print(f'Iteration {it+1}', file=f)
+            print(f'...........', file=f)
             # initialise empty list of list for clusters
             clusters = [[] for _ in range(self.k)]
 
@@ -79,13 +85,17 @@ class KMeans:
 
             # print centroids
             for c in range(3):
-                print(f'Cluster  {c + 1}: {the_labels[c]}')
-                print(f'Centroid {c+1}: {centroids_old[c]}\n')
-            print(f'\n')
+                print(f'Cluster  {c + 1}: {the_labels[c]}', file=f)
+                print(f'Centroid {c+1}: {centroids_old[c]}\n', file=f)
+            print(f'\n', file=f)
+
             # check if clusters have changed
             if self._is_converged(centroids_old, self.centroids):
-                print(f'Converged!')
+                print(f'Converged!',file=f)
                 break
+
+                # close file
+                f.close()
 
         # Classify samples as the index of their clusters
         return the_labels

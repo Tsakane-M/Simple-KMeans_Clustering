@@ -42,7 +42,7 @@ def process_input(my_lines):
 # define main method
 if __name__ == '__main__':
 
-    print_hi(f'K-means Computation\n')
+    print_hi(f'Output written to Output.txt!\n')
     the_lines = read_data()
     data = process_input(the_lines)
 

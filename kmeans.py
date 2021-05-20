@@ -21,7 +21,7 @@ class KMeans:
         # initialise centroids indices as 1 ,4, 7
         self.class_data = class_dat
         self.centroids = [[int(self.class_data[0][1]), int(self.class_data[0][2])], [int(self.class_data[3][1]), int( self.class_data[3][2])], [int(self.class_data[6][1]), int(self.class_data[6][2])]]
-
+        iterations = 1
         # optimization
         # CREATE CLUSTERS
 
@@ -33,6 +33,7 @@ class KMeans:
 
         # Optimize clusters
         for it in range(self.max_iterations):
+            iterations = iterations+1
             print(f'Iteration {it+1}', file=f)
             print(f'...........', file=f)
             # initialise empty list of list for clusters
@@ -88,7 +89,7 @@ class KMeans:
                 print(f'Converged!', file=f)
                 break
                 # close file
-
+        print(f'Number of iterations: {iterations}', file=f)
         # Classify samples as the index of their clusters
         return the_labels
 

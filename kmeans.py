@@ -29,53 +29,56 @@ class KMeans:
         # optimization
         # CREATE CLUSTERS
 
-        # initialise empty list of list for clusters
-        clusters = [[] for _ in range(self.k)]
+        # Optimize clusters
+        for _ in range(self.max_iterations):
+            # initialise empty list of list for clusters
+            clusters = [[] for _ in range(self.k)]
 
-        # 1. get the index of closest centroid
-        # 1.1 iterate over the data
-        for i in range(8):
-            distances = [3]*3
-            # calculate euclidean distances for each sample in the data
-            # print(self.class_data[i][1])
-            # get x and y value from input
-            x_data = self.class_data[i][1]
-            y_data = self.class_data[i][2]
+            # 1. get the index of closest centroid
+            # 1.1 iterate over the data
+            for i in range(8):
+                distances = [3]*3
+                # calculate euclidean distances for each sample in the data
+                # print(self.class_data[i][1])
+                # get x and y value from input
+                x_data = self.class_data[i][1]
+                y_data = self.class_data[i][2]
 
-            for j in range(3):
-                # get x and y from centroids
-                x_cent = self.centroids[j][0]
-                y_cent = self.centroids[j][1]
+                for j in range(3):
+                    # get x and y from centroids
+                    x_cent = self.centroids[j][0]
+                    y_cent = self.centroids[j][1]
 
-                # calculate euclidean distance
-                xSquare = (int(x_cent) - int(x_data)) ** 2
-                ySquare = (int(y_cent) - int(y_data)) ** 2
-                distance = np.sqrt(xSquare + ySquare)
-                distances[j] = distance
+                    # calculate euclidean distance
+                    xSquare = (int(x_cent) - int(x_data)) ** 2
+                    ySquare = (int(y_cent) - int(y_data)) ** 2
+                    distance = np.sqrt(xSquare + ySquare)
+                    distances[j] = distance
 
-            #print(distances)
+                #print(distances)
 
-            # find closest index
-            closest_index = np.argmin(distances)
+                # find closest index
+                closest_index = np.argmin(distances)
 
-            # assign closest index to array that stores clusters
-            clusters[closest_index].append(i)
-        self.clusters = clusters
+                # assign closest index to array that stores clusters
+                clusters[closest_index].append(i)
+            self.clusters = clusters
 
-        # print(clusters)
+            print(f'Cluster is: {clusters}\n')
 
-        # Calculate new centroids from the clusters
+            # Calculate new centroids from the clusters
 
-        # save old centroids
-        centroids_old = self.centroids
+            # save old centroids
+            centroids_old = self.centroids
 
-        self.centroids = self.compute_centroids(self.clusters)
-        # print(self.centroids)
+            self.centroids = self.compute_centroids(self.clusters)
+            print(f'Centroids are {self.centroids}')
 
-        # check if clusters have changed
-        if self._is_converged(centroids_old, self.centroids):
-           #break
-           print(Converged)
+            # check if clusters have changed
+            if self._is_converged(centroids_old, self.centroids):
+                print(f'Converged')
+                break
+
 
     def compute_centroids(self, clusters):
         # initialise the centroids with zeros

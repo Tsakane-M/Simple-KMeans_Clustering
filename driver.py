@@ -36,7 +36,7 @@ def process_input(my_lines):
     for index in range(samples):
         this_data[index] = my_lines[index].split()
 
-    print(f'length of data is {len(this_data)}')
+    # print(f'length of data is {len(this_data)}')
     return this_data
 
 

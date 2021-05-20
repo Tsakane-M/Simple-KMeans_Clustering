@@ -29,7 +29,7 @@ class KMeans:
     def compute_algorithm(self, class_dat):
         # initialise centroids indices as 1 ,4, 7
         self.class_data = class_dat
-        self.centroids = [self.class_data[0], self.class_data[4], self.class_data[7]]
+        self.centroids = [self.class_data[0], self.class_data[3], self.class_data[6]]
 
         # optimization
         # CREATE CLUSTERS
@@ -50,23 +50,43 @@ class KMeans:
 
             # assign closest index to array that stores clusters
             clusters[closest_index].append(i)
+        self.clusters = clusters
 
-            print(clusters)
 
-            # Calculate new centroids from the clusters
-            centroids_old = self.centroids
-            self.centroids = self.compute_centroids(self.clusters)
+        # Calculate new centroids from the clusters
+
+        # save old centroids
+        centroids_old = self.centroids
+
+        self.centroids = self.compute_centroids(self.clusters)
 
     def compute_centroids(self, clusters):
         # initialise the centroids with zeros
-        centroids = np.zeros(self.k, self.sample_size)
+        centroids = [0, 0, 0]
+        print(clusters)
 
+        for i in range(3):
+            x_cluster_sum = 0
+            y_cluster_sum = 0
+            print(f'Cluster {i}')
+            for j in range(len(clusters[i])):
+                xvalue = int((self.class_data[clusters[i][j]])[1])
+                yvalue = int((self.class_data[clusters[i][j]])[2])
+                print(f'x is {xvalue} : y is {yvalue}')
+                x_cluster_sum = x_cluster_sum + xvalue
+                y_cluster_sum = y_cluster_sum + yvalue
+            x_cluster_mean = x_cluster_sum/len(clusters[i])
+            y_cluster_mean = y_cluster_sum / len(clusters[i])
+
+            print(f'Cluster {i} xmean= {x_cluster_mean}')
+            print(f'Cluster {i} ymean= {y_cluster_mean}')
+            print(f'\n')
+        return [0, 3, 6]
         # calculate the new mean for each cluster
-        for cluster_index, cluster in enumerate(clusters):
-            cluster_mean = np.mean(self.x[cluster], axis=0)
-            centroids[cluster_index] = cluster_mean
+        # for cluster_index, cluster in enumerate(clusters):
+            # cluster_mean = np.mean(self.x[cluster], axis=0)
+            # centroids[cluster_index] = cluster_mean\
 
-        return centroids
 
 
 

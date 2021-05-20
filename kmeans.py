@@ -39,9 +39,9 @@ class KMeans:
 
         # 1. get the index of closest centroid
         # 1.1 iterate over the data
-        for i in range(len(self.class_data)):
+        for i in range(8):
             distances = [3]*3
-            for j in range(len(self.centroids)):
+            for j in range(3):
                 # calculate euclidean distances for each sample in the data
                 distances[j] = euclidean_distance(self.class_data, self.centroids, i, j)
 
@@ -55,18 +55,18 @@ class KMeans:
 
             # Calculate new centroids from the clusters
             centroids_old = self.centroids
-            self.centroids = self._get_centroids(self.clusters)
+            self.centroids = self.compute_centroids(self.clusters)
 
+    def compute_centroids(self, clusters):
+        # initialise the centroids with zeros
+        centroids = np.zeros(self.k, self.sample_size)
 
+        # calculate the new mean for each cluster
+        for cluster_index, cluster in enumerate(clusters):
+            cluster_mean = np.mean(self.x[cluster], axis=0)
+            centroids[cluster_index] = cluster_mean
 
-
-
-
-
-
-
-            # put the current sample index in the closest cluster
-            # clusters[centroid_index].append(i)
+        return centroids
 
 
 

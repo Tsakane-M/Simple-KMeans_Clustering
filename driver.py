@@ -36,7 +36,7 @@ def process_input(my_lines):
     for index in range(samples):
         this_data[index] = my_lines[index].split()
 
-    print(this_data)
+    print(f'length of data is {len(this_data)}')
     return this_data
 
 
@@ -51,5 +51,3 @@ if __name__ == '__main__':
     k = KMeans(3, 150, len(data))
 
     k.compute_algorithm(data)
-
-

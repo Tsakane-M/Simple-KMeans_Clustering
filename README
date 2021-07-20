@@ -1,0 +1,13 @@
+To run:
+ 1) Go into directory from terminal and run "make clean" to make sure directory is clean of all object files.
+ 2) Run "make" command in terminal to compile and run the program
+ 3) NB: Default input can be changed in the input.txt file
+
+
+driver.py: The driver file that creates a KMeans object and runs the algorithm. This contains the main method,
+            event loops and user interaction handling.
+
+kmeans.py: This is the main implementation file that contains all the methods used to process the user input data
+           and apply the kmeans algorithm on the data when the program is running.
+            This is imported into the driver file to provide results to the driver.
+
